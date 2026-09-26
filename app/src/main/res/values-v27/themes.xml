@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android 8.1+: navigation bar ke icons dark -->
+    <style name="Theme.BSRPro" parent="Base.Theme.BSRPro">
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+</resources>

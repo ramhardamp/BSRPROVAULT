@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- v6.6 Light theme. Purane naam (bg_dark, surface1 ...) niche alias hain — unki value ab LIGHT hai. -->
+    <color name="white">#FFFFFF</color>
+    <color name="bg">#F5F7FA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_alt">#EEF2F7</color>
+    <color name="outline">#D5DCE6</color>
+    <color name="outline_strong">#8A94A6</color>
+
+    <color name="accent">#0F766E</color>
+    <color name="accent_dark">#0B5D57</color>
+    <color name="accent_soft">#E6F4F1</color>
+    <color name="accent_soft_stroke">#B7DDD5</color>
+    <color name="success">#047857</color>
+    <color name="danger">#DC2626</color>
+    <color name="danger_soft">#FDECEC</color>
+
+    <color name="text_primary">#111827</color>
+    <color name="text_secondary">#4B5563</color>
+    <color name="text_hint">#6B7280</color>
+
+    <!-- Legacy aliases (layouts/Kotlin inhi naamon ko use karte hain) -->
+    <color name="bg_dark">@color/bg</color>
+    <color name="surface1">@color/surface</color>
+    <color name="surface2">@color/surface_alt</color>
+    <color name="border">@color/outline</color>
+    <color name="accent_blue">@color/accent</color>
+    <color name="accent_green">@color/success</color>
+</resources>

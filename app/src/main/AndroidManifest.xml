@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+
+    <!-- Android 11+: allow querying launchable apps for the user-facing App Picker. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN"/>
+            <category android:name="android.intent.category.LAUNCHER"/>
+        </intent>
+        <package android:name="com.android.chrome"/>
+        <package android:name="com.chrome.beta"/>
+        <package android:name="com.chrome.dev"/>
+        <package android:name="com.chrome.canary"/>
+    </queries>
+    <application
+        android:name=".BSRApp"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.BSRPro"
+        android:networkSecurityConfig="@xml/network_security">
+        <activity android:name=".LoginActivity" android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity" android:exported="false"/>
+        <activity android:name=".AddEditActivity" android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".SettingsActivity" android:exported="true"/>
+        <activity android:name=".GeneratorActivity" android:exported="false"/>
+        <activity android:name=".OtpManagerActivity" android:exported="false"/>
+        <activity android:name=".BackupActivity" android:exported="false"/>
+        <activity android:name=".PickerActivity" android:exported="false"/>
+        <!-- v6.9.1: pehle teen alag screens (Autofill/System Diagnostics + Self-Test) yahan
+             registered thi; ab teeno ek DiagnosticsActivity mein merge ho gayi hain. -->
+        <activity android:name=".DiagnosticsActivity" android:exported="false"
+            android:label="Diagnostics &amp; Self-Test"/>
+        <service android:name=".autofill.BSRAutofillService" android:exported="true"
+            android:permission="android.permission.BIND_AUTOFILL_SERVICE"
+            android:label="@string/autofill_service_label">
+            <intent-filter>
+                <action android:name="android.service.autofill.AutofillService"/>
+            </intent-filter>
+            <meta-data android:name="android.autofill" android:resource="@xml/autofill_service_config"/>
+        </service>
+    </application>
+</manifest>

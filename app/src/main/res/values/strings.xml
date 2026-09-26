@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BSR Vault</string>
+    <string name="app_tagline">Secure Password Manager</string>
+    <string name="autofill_service_label">BSR Vault</string>
+    <string name="autofill_service_description">BSR Vault Password Manager AutoFill</string>
+    <string name="logo_description">BSR Vault logo</string>
+</resources>

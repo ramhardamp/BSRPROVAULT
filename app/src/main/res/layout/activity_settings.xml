@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dark"
+    android:fillViewport="true">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="16dp">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_marginBottom="20dp">
+      <ImageButton android:id="@+id/btnBack" android:layout_width="40dp" android:layout_height="40dp" android:src="@android:drawable/ic_menu_close_clear_cancel" android:background="?attr/selectableItemBackgroundBorderless" android:tint="@color/text_primary"/>
+      <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="10dp" android:text="Settings" android:textColor="@color/text_primary" android:textSize="20sp" android:textStyle="bold"/>
+    </LinearLayout>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SECURITY" android:textColor="@color/accent_blue" android:textSize="11sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+    <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:cardBackgroundColor="@color/surface1" app:cardCornerRadius="12dp" app:cardElevation="0dp" app:strokeColor="@color/border" app:strokeWidth="1dp">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="60dp" android:gravity="center_vertical" android:paddingHorizontal="16dp">
+          <TextView android:layout_width="36dp" android:layout_height="wrap_content" android:text="🔐" android:textSize="20sp"/>
+          <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Biometric Unlock" android:textColor="@color/text_primary" android:textSize="14sp"/>
+          <Switch android:id="@+id/switchBiometric" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:padding="16dp">
+          <TextView android:layout_width="36dp" android:layout_height="wrap_content" android:text="⏱️" android:textSize="20sp"/>
+          <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Auto-Lock" android:textColor="@color/text_primary" android:textSize="14sp"/>
+            <Spinner android:id="@+id/spinnerAutoLock" android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginTop="6dp" android:background="@drawable/spinner_bg" android:paddingHorizontal="12dp"/>
+          </LinearLayout>
+        </LinearLayout>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:padding="16dp">
+          <TextView android:layout_width="36dp" android:layout_height="wrap_content" android:text="📋" android:textSize="20sp"/>
+          <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Clipboard Clear" android:textColor="@color/text_primary" android:textSize="14sp"/>
+            <Spinner android:id="@+id/spinnerClipClear" android:layout_width="match_parent" android:layout_height="44dp" android:layout_marginTop="6dp" android:background="@drawable/spinner_bg" android:paddingHorizontal="12dp"/>
+          </LinearLayout>
+        </LinearLayout>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnChangeMaster" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="🔑  Change Master Password" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnSecureScreen" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="🔒  Screenshot block" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
+      </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="AUTOFILL" android:textColor="@color/accent_blue" android:textSize="11sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+    <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:cardBackgroundColor="@color/surface1" app:cardCornerRadius="12dp" app:cardElevation="0dp" app:strokeColor="@color/border" app:strokeWidth="1dp">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnAutofillSetup" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="⚡  Autofill" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
+        <TextView android:id="@+id/tvChromeAutofillStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:text="Chrome 3rd-party Autofill status check ho raha hai…" android:textColor="@color/text_secondary" android:textSize="12sp"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnChromeAutofillSettings" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="🌐  Open Chrome Autofill Settings" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnDiag" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="🩺  Diagnostics &amp; Self-Test" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
+      </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DATA" android:textColor="@color/accent_blue" android:textSize="11sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+    <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:cardBackgroundColor="@color/surface1" app:cardCornerRadius="12dp" app:cardElevation="0dp" app:strokeColor="@color/border" app:strokeWidth="1dp">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnBackupRestore" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="💾  Backup &amp; Restore" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnAutoBackup" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="☁️  Auto-backup" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnTrash" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="🗑️  Trash" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
+      </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="APPEARANCE" android:textColor="@color/accent_blue" android:textSize="11sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+    <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:cardBackgroundColor="@color/surface1" app:cardCornerRadius="12dp" app:cardElevation="0dp" app:strokeColor="@color/border" app:strokeWidth="1dp">
+      <com.google.android.material.button.MaterialButton android:id="@+id/btnTheme" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="🎨  Theme: System" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1" android:textAllCaps="false"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="GENERAL" android:textColor="@color/accent_blue" android:textSize="11sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+    <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="16dp" app:cardBackgroundColor="@color/surface1" app:cardCornerRadius="12dp" app:cardElevation="0dp" app:strokeColor="@color/border" app:strokeWidth="1dp">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+        <TextView android:id="@+id/tvVersion" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:textColor="@color/text_hint" android:textSize="13sp"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnAudit" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="🛡️  Security Audit" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnAbout" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="ℹ️  About" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnHelp" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="❓  Help" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
+      </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DANGER ZONE" android:textColor="@color/danger" android:textSize="11sp" android:textStyle="bold" android:layout_marginBottom="8dp"/>
+    <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="20dp" app:cardBackgroundColor="@color/surface1" app:cardCornerRadius="12dp" app:cardElevation="0dp" app:strokeColor="@color/danger" app:strokeWidth="1dp">
+      <com.google.android.material.button.MaterialButton android:id="@+id/btnResetVault" android:layout_width="match_parent" android:layout_height="60dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="⚠️  Reset Vault (Delete All)" android:textColor="@color/danger" android:backgroundTint="@color/danger_soft"/>
+    </com.google.android.material.card.MaterialCardView>
+
+  </LinearLayout>
+</ScrollView>
