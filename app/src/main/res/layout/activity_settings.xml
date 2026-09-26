@@ -56,6 +56,8 @@
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
         <com.google.android.material.button.MaterialButton android:id="@+id/btnChromeAutofillSettings" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="🌐  Open Chrome Autofill Settings" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
         <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnOtpManager" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="🔢  OTP / 2FA Manager" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/border"/>
         <com.google.android.material.button.MaterialButton android:id="@+id/btnDiag" android:layout_width="match_parent" android:layout_height="56dp" android:gravity="start|center_vertical" android:paddingHorizontal="16dp" android:text="🩺  Diagnostics &amp; Self-Test" android:textColor="@color/text_primary" android:backgroundTint="@color/surface1"/>
       </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
