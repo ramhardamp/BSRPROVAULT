@@ -1,0 +1,20 @@
+# Signing / secrets — NEVER commit these
+key.properties
+*.jks
+*.keystore
+
+# Local machine config
+local.properties
+
+# Build output
+*.iml
+.gradle/
+build/
+app/build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# IDE
+.idea/
+*.hprof

@@ -1,0 +1,10 @@
+# Copy this file to "key.properties" (same folder as this file) and fill in
+# YOUR OWN real keystore details. key.properties is git-ignored — never commit
+# your real passwords/keystore path.
+#
+# See RELEASE_BUILD_INSTRUCTIONS.md for how to generate a keystore.
+
+storeFile=/absolute/path/to/your/release-keystore.jks
+storePassword=CHANGE_ME
+keyAlias=CHANGE_ME
+keyPassword=CHANGE_ME
