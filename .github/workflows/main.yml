@@ -1,0 +1,138 @@
+name: BSR Vault v6.9.1 Android Build
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build BSR Vault v6.9.1 APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Locate Gradle project
+        shell: bash
+        run: |
+          set -e
+          GRADLEW_PATH="$(find . -maxdepth 3 -type f -name gradlew | head -n 1)"
+          if [ -z "$GRADLEW_PATH" ]; then
+            echo "ERROR: gradlew not found."; find . -maxdepth 3 -type f | sort | head -n 300; exit 1
+          fi
+          PROJECT_DIR="$(dirname "$GRADLEW_PATH")"; PROJECT_DIR="${PROJECT_DIR#./}"
+          echo "PROJECT_DIR=$PROJECT_DIR" >> "$GITHUB_ENV"
+          echo "Found Gradle project: $PROJECT_DIR"
+
+      - name: Make Gradle executable
+        run: chmod +x "$PROJECT_DIR/gradlew" "$PROJECT_DIR/tools/verify_apk.sh"
+
+      - name: Verify Gradle
+        run: cd "$PROJECT_DIR" && ./gradlew --version
+
+      - name: Static Android reference verification
+        run: python3 "$PROJECT_DIR/tools/verify_android_refs.py"
+
+      - name: BSRPRO.Vault + export-gate tests (Chrome & Firefox extension code)
+        shell: bash
+        run: |
+          set -e
+          if [ -d Extensions/CHROME ]; then
+            node "$PROJECT_DIR/tests/bsrpro-vault/ext_export_gate_and_v3_test.js" CHROME
+            node "$PROJECT_DIR/tests/bsrpro-vault/ext_export_gate_and_v3_test.js" FIREFOX
+          else
+            echo "Extensions/ not in this repo — skipping extension tests"
+          fi
+
+      - name: Compile Kotlin
+        run: cd "$PROJECT_DIR" && ./gradlew :app:compileDebugKotlin --stacktrace
+
+      - name: Lint (report only)
+        continue-on-error: true
+        run: cd "$PROJECT_DIR" && ./gradlew :app:lintDebug --stacktrace
+
+      - name: Build Debug APK
+        run: cd "$PROJECT_DIR" && ./gradlew clean assembleDebug --stacktrace
+
+      - name: Verify Debug APK (integrity / signature / package / version)
+        run: |
+          for f in "$PROJECT_DIR"/app/build/outputs/apk/debug/*.apk; do "$PROJECT_DIR/tools/verify_apk.sh" "$f" com.babasitaram.pro no; done
+
+      - name: Prepare release signing from GitHub Secrets
+        id: signing
+        shell: bash
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_BASE64" ] && [ -n "$KEYSTORE_PASSWORD" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PASSWORD" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > "$PROJECT_DIR/release-keystore.jks"
+            {
+              echo "storeFile=$GITHUB_WORKSPACE/$PROJECT_DIR/release-keystore.jks"
+              echo "storePassword=$KEYSTORE_PASSWORD"
+              echo "keyAlias=$KEY_ALIAS"
+              echo "keyPassword=$KEY_PASSWORD"
+            } > "$PROJECT_DIR/key.properties"
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Release signing secrets (KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD) not set - signed release APK NOT built. An unsigned release APK cannot be installed ('App not installed'). Use the debug APK for testing, or add the secrets (see RELEASE_BUILD_INSTRUCTIONS.md)."
+          fi
+
+      - name: Build signed Release APK
+        if: steps.signing.outputs.enabled == 'true'
+        run: cd "$PROJECT_DIR" && ./gradlew assembleRelease --stacktrace
+
+      - name: Verify Release APK (must be signed with YOUR key)
+        if: steps.signing.outputs.enabled == 'true'
+        run: |
+          for f in "$PROJECT_DIR"/app/build/outputs/apk/release/*.apk; do "$PROJECT_DIR/tools/verify_apk.sh" "$f" com.babasitaram.pro yes; done
+
+      - name: Remove signing material from workspace
+        if: always()
+        run: rm -f "$PROJECT_DIR/release-keystore.jks" "$PROJECT_DIR/key.properties"
+
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: BSR-Vault-v6.9.1-debug
+          path: '**/app/build/outputs/apk/debug/*.apk'
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload signed Release APK
+        if: steps.signing.outputs.enabled == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: BSR-Vault-v6.9.1-release-signed
+          path: '**/app/build/outputs/apk/release/*.apk'
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload build reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BSR-Vault-v6.9.1-build-reports
+          path: |
+            **/app/build/reports/**
+            **/app/build/outputs/logs/**
+          if-no-files-found: ignore
+          retention-days: 14
