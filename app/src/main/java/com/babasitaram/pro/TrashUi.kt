@@ -14,7 +14,7 @@ object TrashUi {
         }
         val labels = Array<CharSequence>(list.size) { i ->
             val e = list[i]
-            (if (e.site.isEmpty()) "(bina naam)" else e.site) + "  •  " + e.username
+            (if (e.site.orEmpty().isEmpty()) "(bina naam)" else e.site.orEmpty()) + "  •  " + e.username.orEmpty()
         }
         AlertDialog.Builder(a)
             .setTitle("🗑️ Trash (" + list.size + ") — 30 din baad auto-delete")
@@ -26,7 +26,7 @@ object TrashUi {
 
     private fun itemActions(a: Activity, e: PasswordEntry) {
         AlertDialog.Builder(a)
-            .setTitle(e.site)
+            .setTitle(e.site.orEmpty())
             .setMessage("Is entry ka kya karein?")
             .setPositiveButton("Restore") { _, _ ->
                 runCatching { VaultManager.restore(a, e.id) }

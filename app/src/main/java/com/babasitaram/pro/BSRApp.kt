@@ -50,7 +50,9 @@ class BSRApp : Application() {
                 }
             }
             override fun onActivityStarted(a: Activity) {}
-            override fun onActivityResumed(a: Activity) {}
+            override fun onActivityResumed(a: Activity) {
+                if (VaultManager.isUnlocked) AppPrefs.setLastActive(a.applicationContext)
+            }
             override fun onActivityPaused(a: Activity) {}
             override fun onActivityStopped(a: Activity) {}
             override fun onActivitySaveInstanceState(a: Activity, b: Bundle) {}

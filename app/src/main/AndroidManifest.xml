@@ -36,7 +36,7 @@
         <activity android:name=".MainActivity" android:exported="false"/>
         <activity android:name=".AddEditActivity" android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".SettingsActivity" android:exported="true"/>
+        <activity android:name=".SettingsActivity" android:exported="true" android:configChanges="uiMode"/>
         <activity android:name=".GeneratorActivity" android:exported="false"/>
         <activity android:name=".OtpManagerActivity" android:exported="false"/>
         <activity android:name=".BackupActivity" android:exported="false"/>

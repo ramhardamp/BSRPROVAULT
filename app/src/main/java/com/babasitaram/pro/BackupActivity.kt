@@ -37,10 +37,11 @@ class BackupActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (VaultManager.isUnlocked) AppPrefs.setLastActive(this)
         // Session expire hone par sirf unlock flow kholen; current task ko CLEAR_TASK na karein.
         if (!VaultManager.isUnlocked && !isFinishing) {
             startActivity(Intent(this, LoginActivity::class.java).apply {
-                putExtra(LoginActivity.EXTRA_RETURN_TO_SETTINGS, true)
+                putExtra(LoginActivity.EXTRA_RETURN_TO_BACKUP, true)
             })
             finish()
         }

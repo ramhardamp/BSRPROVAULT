@@ -20,6 +20,9 @@ class LoginActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_RETURN_TO_SETTINGS = "return_to_settings"
+        const val EXTRA_RETURN_TO_BACKUP = "return_to_backup"
+        const val EXTRA_RETURN_TO_EDIT = "return_to_edit"
+        const val EXTRA_FORCE_SETUP = "force_setup"
     }
 
     // Setup
@@ -80,7 +83,8 @@ class LoginActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE) { doSetup(); true } else false
         }
 
-        if (VaultManager.isSetupDone(this)) showLoginScreen()
+        if (intent.getBooleanExtra(EXTRA_FORCE_SETUP, false)) showSetupScreen()
+        else if (VaultManager.isSetupDone(this)) showLoginScreen()
         else showSetupScreen()
     }
 
@@ -241,6 +245,20 @@ class LoginActivity : AppCompatActivity() {
         // Autofill se aaye hain? To MainActivity nahi, seedha fill result wapas do
         if (intent.getBooleanExtra(BSRAutofillService.EXTRA_FROM_AUTOFILL, false)) {
             returnAutofillResult()
+            return
+        }
+        if (intent.getBooleanExtra(EXTRA_RETURN_TO_BACKUP, false)) {
+            startActivity(Intent(this, BackupActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP))
+            finish()
+            return
+        }
+        if (intent.getBooleanExtra(EXTRA_RETURN_TO_EDIT, false)) {
+            val edit = Intent(this, AddEditActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            intent.getStringExtra("id")?.let { edit.putExtra("id", it) }
+            finish()
+            startActivity(edit)
             return
         }
         if (intent.getBooleanExtra(EXTRA_RETURN_TO_SETTINGS, false)) {
