@@ -37,16 +37,24 @@ class BackupActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Auto-lock ke baad (app background mein rehne par) vault locked ho jaata hai — is screen par kaam nahi hona chahiye.
-        if (!VaultManager.isUnlocked) {
-            startActivity(Intent(this, LoginActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+        // Session expire hone par sirf unlock flow kholen; current task ko CLEAR_TASK na karein.
+        if (!VaultManager.isUnlocked && !isFinishing) {
+            startActivity(Intent(this, LoginActivity::class.java).apply {
+                putExtra(LoginActivity.EXTRA_RETURN_TO_SETTINGS, true)
+            })
             finish()
         }
     }
 
     override fun onCreate(s: Bundle?) {
         super.onCreate(s)
+        if (!VaultManager.isUnlocked) {
+            startActivity(Intent(this, LoginActivity::class.java).apply {
+                putExtra(LoginActivity.EXTRA_RETURN_TO_SETTINGS, true)
+            })
+            finish()
+            return
+        }
         setContentView(R.layout.activity_backup)
 
         btnImport     = findViewById(R.id.btnImport)

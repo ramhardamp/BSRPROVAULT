@@ -29,12 +29,30 @@ object TrashUi {
             .setTitle(e.site)
             .setMessage("Is entry ka kya karein?")
             .setPositiveButton("Restore") { _, _ ->
-                VaultManager.restore(a, e.id)
-                Toast.makeText(a, "✓ Wapas aa gaya", Toast.LENGTH_SHORT).show()
+                runCatching { VaultManager.restore(a, e.id) }
+                    .onSuccess { ok ->
+                        Toast.makeText(
+                            a,
+                            if (ok) "✓ Wapas aa gaya" else "Restore nahi ho paaya",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    .onFailure { err ->
+                        Toast.makeText(a, "Restore failed: " + (err.message ?: err.javaClass.simpleName), Toast.LENGTH_LONG).show()
+                    }
             }
             .setNegativeButton("Hamesha ke liye delete") { _, _ ->
-                VaultManager.deleteForever(a, e.id)
-                Toast.makeText(a, "Delete ho gaya", Toast.LENGTH_SHORT).show()
+                runCatching { VaultManager.deleteForever(a, e.id) }
+                    .onSuccess { ok ->
+                        Toast.makeText(
+                            a,
+                            if (ok) "Delete ho gaya" else "Delete nahi ho paaya",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    .onFailure { err ->
+                        Toast.makeText(a, "Delete failed: " + (err.message ?: err.javaClass.simpleName), Toast.LENGTH_LONG).show()
+                    }
             }
             .setNeutralButton("Cancel", null)
             .show()
@@ -45,8 +63,17 @@ object TrashUi {
             .setTitle("Trash khali karein?")
             .setMessage("Trash ki saari entries hamesha ke liye delete ho jayengi.")
             .setPositiveButton("Haan, delete") { _, _ ->
-                VaultManager.emptyTrash(a)
-                Toast.makeText(a, "Trash khali", Toast.LENGTH_SHORT).show()
+                runCatching { VaultManager.emptyTrash(a) }
+                    .onSuccess { ok ->
+                        Toast.makeText(
+                            a,
+                            if (ok) "Trash khali" else "Trash empty nahi ho paaya",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    .onFailure { err ->
+                        Toast.makeText(a, "Trash empty failed: " + (err.message ?: err.javaClass.simpleName), Toast.LENGTH_LONG).show()
+                    }
             }
             .setNegativeButton("Cancel", null)
             .show()

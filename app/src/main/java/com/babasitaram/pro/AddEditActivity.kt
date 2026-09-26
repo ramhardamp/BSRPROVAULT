@@ -68,10 +68,11 @@ class AddEditActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Auto-lock ke baad (app background mein rehne par) vault locked ho jaata hai — is screen par kaam nahi hona chahiye.
-        if (!VaultManager.isUnlocked) {
-            startActivity(Intent(this, LoginActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+        // Session expire hone par unlock flow kholen, lekin poora task CLEAR_TASK na karein.
+        if (!VaultManager.isUnlocked && !isFinishing) {
+            startActivity(Intent(this, LoginActivity::class.java).apply {
+                putExtra(LoginActivity.EXTRA_RETURN_TO_SETTINGS, true)
+            })
             finish()
         }
     }
@@ -340,7 +341,13 @@ class AddEditActivity : AppCompatActivity() {
 
         val isEdit = editId != null
         AutofillLog.add(this, "edit: entryId=${entry.id}, save=START mode=${if (isEdit) "UPDATE" else "ADD"}")
-        val success = if (isEdit) VaultManager.update(this, entry) else VaultManager.add(this, entry)
+        val success = try {
+            if (isEdit) VaultManager.update(this, entry) else VaultManager.add(this, entry)
+        } catch (e: Exception) {
+            AutofillLog.add(this, "edit: entryId=${entry.id}, save=FAIL exception=${e.javaClass.simpleName}")
+            Toast.makeText(this, "Save failed: " + (e.message ?: e.javaClass.simpleName), Toast.LENGTH_LONG).show()
+            false
+        }
         if (success) {
             if (entry.isPrimaryAppLogin && !entry.appPackage.isNullOrBlank()) {
                 val primaryOk = VaultManager.setPrimaryAppLogin(this, entry.id, entry.appPackage)
