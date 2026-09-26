@@ -1,4 +1,4 @@
-name: BSR Vault v6.9.1 Android Build
+name: BSR Vault v6.9.2 Android Build
 
 on:
   push:
@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build BSR Vault v6.9.1 APK
+    name: Build BSR Vault v6.9.2 APK
     runs-on: ubuntu-latest
 
     steps:
@@ -112,7 +112,7 @@ jobs:
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: BSR-Vault-v6.9.1-debug
+          name: BSR-Vault-v6.9.2-debug
           path: '**/app/build/outputs/apk/debug/*.apk'
           if-no-files-found: error
           retention-days: 30
@@ -121,7 +121,7 @@ jobs:
         if: steps.signing.outputs.enabled == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: BSR-Vault-v6.9.1-release-signed
+          name: BSR-Vault-v6.9.2-release-signed
           path: '**/app/build/outputs/apk/release/*.apk'
           if-no-files-found: error
           retention-days: 30
@@ -130,7 +130,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: BSR-Vault-v6.9.1-build-reports
+          name: BSR-Vault-v6.9.2-build-reports
           path: |
             **/app/build/reports/**
             **/app/build/outputs/logs/**
