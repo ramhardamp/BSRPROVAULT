@@ -2,6 +2,7 @@ package com.babasitaram.pro
 
 import android.content.Intent
 import android.os.Bundle
+import android.content.res.Configuration
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -25,6 +26,14 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (VaultManager.isUnlocked) AppPrefs.setLastActive(this)
+        refreshButtons()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // Theme change is handled in-place (manifest uiMode) so AppCompat cannot
+        // recreate SettingsActivity and accidentally route the user through Login.
         refreshButtons()
     }
 
@@ -265,6 +274,11 @@ class SettingsActivity : AppCompatActivity() {
         // Change master password
         btnChangeMaster.setOnClickListener { showChangeMasterDialog() }
 
+        // OTP / 2FA Manager
+        findViewById<Button>(R.id.btnOtpManager)?.setOnClickListener {
+            startActivity(Intent(this, OtpManagerActivity::class.java))
+        }
+
         // Reset vault
         // Backup button
         findViewById<Button>(R.id.btnAutofillSetup)?.setOnClickListener {
@@ -312,8 +326,10 @@ class SettingsActivity : AppCompatActivity() {
                 .setPositiveButton("RESET KARO") { _, _ ->
                     VaultManager.resetAll(this)
                     AppPrefs.clearBioCache(this)
-                    startActivity(Intent(this, LoginActivity::class.java)
-                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                    startActivity(Intent(this, LoginActivity::class.java).apply {
+                        putExtra(LoginActivity.EXTRA_FORCE_SETUP, true)
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    })
                     finish()
                 }
                 .setNegativeButton("Cancel", null)
